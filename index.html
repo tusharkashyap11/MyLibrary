@@ -12,11 +12,28 @@
 </head>
 <body>
      <div class="header">
-        <h1>Library</h1>
+        <h1>My Library</h1>
         <button>Log In</button>
     </div>
     <div class="books">
 
     </div>
+    <button id="addBook">NEW BOOK</button>
+    <dialog id="bookModal">
+        <form id="bookForm">
+            <input type="text" id="book_title" name="book_title" placeholder="Book Title">
+            <br>
+            <input type="text" id="book_author" name="book_author" placeholder="Book Author">
+            <br>
+            <input type="tel" id="book_pages" name="book_pages" placeholder="No. of Pages">
+            <br>
+            <div class="finish-reading-box">
+                <label>Finished reading?</label>
+                <input type="checkbox" id="book_status" name="book_status">
+            </div>
+            <br>
+            <button type="submit" id="add">Add</button>
+        </form>
+    </dialog>
 </body>
 </html>

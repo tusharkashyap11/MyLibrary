@@ -46,3 +46,22 @@ function displayBooks() {
 }
 
 displayBooks();
+
+const bookModal = document.getElementById('bookModal');
+const addBook = document.getElementById('addBook');
+const add = document.getElementById('add');
+
+addBook.addEventListener('click', function() {
+    bookModal.showModal();
+    bookModal.classList.add('show');
+});
+function exitModal() {
+    bookModal.close();
+    bookModal.classList.remove('show');
+}
+add.addEventListener('click', exitModal);
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      exitModal();
+    }
+});
