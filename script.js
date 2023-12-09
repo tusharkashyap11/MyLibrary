@@ -7,18 +7,13 @@ function Book(title, author, pages, isRead) {
         return `${this.title} by ${this.author}, ${this.pages}, ${this.isRead === true ? "read" : "not read yet"}` 
     }
 }
-const theHobbit = new Book("The Hobbit", "J.R.R Tolkien", 295, false);
 
-const myLibrary = [theHobbit];
+const myLibrary = [];
 
-function addBookToLibrary() {
-    let title = prompt('Enter book title');
-    let author = prompt('Enter book author');
-    let pages = prompt('Enter book pages');
-    let isRead = prompt('Enter True or False if you read the book');
+function addBookToLibrary(title, author, pages, isRead) {
     let dynamicObject = new Book(title, author, pages, isRead);
-
     myLibrary.push(dynamicObject);
+    displayBooks();
 }
 
 
@@ -26,26 +21,31 @@ const books = document.querySelector('.books');
 
 function displayBooks() {
     const book = document.createElement('div');
-    myLibrary.forEach(element => {
-        book.className = book;
-        const bookTitle = document.createElement('p');    
-        const bookAuthor = document.createElement('p');    
-        const bookPages = document.createElement('p');
-        const bookRead = document.createElement('p');
-        bookTitle.textContent = "Title: " + element.title; 
-        bookAuthor.textContent = "Author: " + element.author; 
-        bookPages.textContent = "Pages: " + element.pages; 
-        bookRead.textContent = "Status: " + element.isRead;
-        book.appendChild(bookTitle);
-        book.appendChild(bookAuthor);
-        book.appendChild(bookPages);
-        book.appendChild(bookRead);
-        book.classList.add('book-style');
-        books.appendChild(book);
-    });
+    book.className = book;
+    const bookTitle = document.createElement('p');    
+    const bookAuthor = document.createElement('p');    
+    const bookPages = document.createElement('p');
+    const bookRead = document.createElement('p');
+    const bookRemove = document.createElement('button');
+    bookTitle.textContent = "Title: " + myLibrary[myLibrary.length - 1].title; 
+    bookAuthor.textContent = "Author: " + myLibrary[myLibrary.length - 1].author; 
+    bookPages.textContent = "Pages: " + myLibrary[myLibrary.length - 1].pages; 
+    bookRead.textContent = "Status: " + myLibrary[myLibrary.length - 1].isRead;
+    book.classList.add('book-style');
+    bookRemove.classList.add('remove');
+    bookRemove.setAttribute('data-index', myLibrary.length - 1);
+    bookRemove.textContent = "Remove";
+    bookRemove.addEventListener('click', function() {
+        book.parentNode.removeChild(book);
+        myLibrary.splice(bookRemove.getAttribute('data-index'), 1);
+    })
+    book.appendChild(bookTitle);
+    book.appendChild(bookAuthor);
+    book.appendChild(bookPages);
+    book.appendChild(bookRead);
+    book.appendChild(bookRemove);
+    books.appendChild(book);
 }
-
-displayBooks();
 
 const bookModal = document.getElementById('bookModal');
 const addBook = document.getElementById('addBook');
@@ -55,13 +55,28 @@ addBook.addEventListener('click', function() {
     bookModal.showModal();
     bookModal.classList.add('show');
 });
-function exitModal() {
-    bookModal.close();
-    bookModal.classList.remove('show');
+function exitModal(event) {
+    event.preventDefault();
+
+    var title = document.getElementById('book_title').value;
+    var author = document.getElementById('book_author').value;
+    var pages = document.getElementById('book_pages').value;
+    var bookStatus = document.getElementById('book_status');
+    var isRead = bookStatus.checked;
+    if (myLibrary.some(item => { return item.title === title })) {
+        document.getElementById('errorMessage').textContent = 'This book is already present in library.';
+    } else { 
+        document.getElementById('errorMessage').textContent = '';
+        addBookToLibrary(title, author, pages, isRead);   
+        bookModal.close();
+        bookModal.classList.remove('show');
+    }
+
 }
 add.addEventListener('click', exitModal);
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      exitModal();
+        bookModal.close();
+        bookModal.classList.remove('show');
     }
 });
