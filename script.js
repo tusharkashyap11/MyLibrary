@@ -49,7 +49,7 @@ function displayBooks() {
     bookRead.addEventListener('click', function() {
         // myLibrary[bookRemove.getAttribute('data-index')].isRead = !myLibrary[bookRemove.getAttribute('data-index')].isRead; (without prototype).
         toggleRead(myLibrary[bookRemove.getAttribute('data-index')].title);
-        bookRead.textContent = (myLibrary[bookRemove.getAttribute('data-index')].isRead === true ? "Read" : "Not Read Yet");
+        bookRead.textContent = (myLibrary[bookRemove.getAttribute('data-index')].isRead === true ? "Read" : "Not read yet");
     })
     bookRemove.addEventListener('click', function() {
         book.parentNode.removeChild(book);
