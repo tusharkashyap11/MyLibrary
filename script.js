@@ -2,7 +2,7 @@ function Book(title, author, pages, isRead) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.isRead = isRead === true ? "Read" : "Not Read Yet"; 
+    this.isRead = isRead; 
     this.info = function() {
         return `${this.title} by ${this.author}, ${this.pages}, ${this.isRead === true ? "read" : "not read yet"}` 
     }
@@ -16,25 +16,41 @@ function addBookToLibrary(title, author, pages, isRead) {
     displayBooks();
 }
 
+function toggleRead(title) {
+    myLibrary.forEach(element => {
+        if (element.title === title) {
+            element.toggleReadStatus();
+        }
+    });
+}
+
+Book.prototype.toggleReadStatus = function () {
+    this.isRead = !this.isRead;
+}
 
 const books = document.querySelector('.books');
 
 function displayBooks() {
     const book = document.createElement('div');
-    book.className = book;
     const bookTitle = document.createElement('p');    
     const bookAuthor = document.createElement('p');    
     const bookPages = document.createElement('p');
-    const bookRead = document.createElement('p');
+    const br = document.createElement('br');
+    const bookRead = document.createElement('button');
     const bookRemove = document.createElement('button');
     bookTitle.textContent = "Title: " + myLibrary[myLibrary.length - 1].title; 
     bookAuthor.textContent = "Author: " + myLibrary[myLibrary.length - 1].author; 
     bookPages.textContent = "Pages: " + myLibrary[myLibrary.length - 1].pages; 
-    bookRead.textContent = "Status: " + myLibrary[myLibrary.length - 1].isRead;
-    book.classList.add('book-style');
+    bookRead.textContent = (myLibrary[myLibrary.length - 1].isRead === true ? "Read" : "Not Read Yet");
+    bookRead.classList.add('read-status')
+    bookRemove.textContent = "Remove";
     bookRemove.classList.add('remove');
     bookRemove.setAttribute('data-index', myLibrary.length - 1);
-    bookRemove.textContent = "Remove";
+    bookRead.addEventListener('click', function() {
+        // myLibrary[bookRemove.getAttribute('data-index')].isRead = !myLibrary[bookRemove.getAttribute('data-index')].isRead; (without prototype).
+        toggleRead(myLibrary[bookRemove.getAttribute('data-index')].title);
+        bookRead.textContent = (myLibrary[bookRemove.getAttribute('data-index')].isRead === true ? "Read" : "Not Read Yet");
+    })
     bookRemove.addEventListener('click', function() {
         book.parentNode.removeChild(book);
         myLibrary.splice(bookRemove.getAttribute('data-index'), 1);
@@ -43,8 +59,10 @@ function displayBooks() {
     book.appendChild(bookAuthor);
     book.appendChild(bookPages);
     book.appendChild(bookRead);
+    book.appendChild(br);
     book.appendChild(bookRemove);
     books.appendChild(book);
+    book.classList.add('book-style');
 }
 
 const bookModal = document.getElementById('bookModal');

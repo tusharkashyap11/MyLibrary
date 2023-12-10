@@ -85,5 +85,13 @@ input {
     border: none;
     color: rgb(255, 255, 255);
     font-weight: 700;
-    width: 50%;
+    width: 70%;
+}
+.read-status {
+    background-color: rgb(105, 105, 105);
+    border: none;
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    margin-bottom: 10px ;
+    width: 70%;
 }
